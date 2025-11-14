@@ -18,9 +18,9 @@ MODEL_PATH="/usr1/home/s125mdg41_03/models/hf_models/qwen317b"
 
 # Output directory depends on loss type
 if [ "$USE_FOCAL_LOSS" = true ]; then
-    OUTPUT_DIR="/usr1/home/s125mdg41_03/models/ee6483/qwen3_${DATASET}_lora_focal_3"
+    OUTPUT_DIR="/usr1/home/s125mdg41_03/models/xxx/qwen3_${DATASET}_lora_focal_3"
 else
-    OUTPUT_DIR="/usr1/home/s125mdg41_03/models/ee6483/qwen3_${DATASET}_lora"
+    OUTPUT_DIR="/usr1/home/s125mdg41_03/models/xxx/qwen3_${DATASET}_lora"
 fi
 
 # Training hyperparameters

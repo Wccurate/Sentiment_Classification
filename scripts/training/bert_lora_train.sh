@@ -14,7 +14,7 @@ CUDA_VISIBLE_DEVICES="0"  # Specify GPU ID(s), e.g., "0" or "0,1,2,3"
 
 MODEL_PATH="/usr1/home/s125mdg41_03/models/hf_models/bert_base_cased_google_bert"
 TOKENIZER_PATH="/usr1/home/s125mdg41_03/models/hf_models/bert_base_cased_google_bert"
-OUTPUT_DIR="/usr1/home/s125mdg41_03/models/ee6483/bert_lora_${DATASET}"
+OUTPUT_DIR="/usr1/home/s125mdg41_03/models/xxx/bert_lora_${DATASET}"
 
 # Training hyperparameters
 EPOCHS=20

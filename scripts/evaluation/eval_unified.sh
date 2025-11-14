@@ -33,24 +33,24 @@ DATASET_DIR="data/raw/${DATASET}"
 # Configure based on MODEL_TYPE
 
 # For bert-head (Head Only or Full Fine-tuning)
-MODEL_PATH="/usr1/home/s125mdg41_03/models/ee6483/${BERT_VERSION}_${DATASET}_hf_head_encoder/best_model"
+MODEL_PATH="/usr1/home/s125mdg41_03/models/xxx/${BERT_VERSION}_${DATASET}_hf_head_encoder/best_model"
 
 # For bert-lora (BERT LoRA)
 BERT_BASE_MODEL_LORA="/usr1/home/s125mdg41_03/models/hf_models/bert_base_cased_google_bert"
-BERT_LORA_ADAPTER_PATH="/usr1/home/s125mdg41_03/models/ee6483/bert_lora_${DATASET}/best_model"
+BERT_LORA_ADAPTER_PATH="/usr1/home/s125mdg41_03/models/xxx/bert_lora_${DATASET}/best_model"
 
 # For bert-prompt (Prompt Tuning)
 BERT_BASE_MODEL_PROMPT="/usr1/home/s125mdg41_03/models/hf_models/bert_base_cased_google_bert"
-BERT_PROMPT_ADAPTER_PATH="/usr1/home/s125mdg41_03/models/ee6483/bert_${DATASET}_hf_p_tuning/best_model"
+BERT_PROMPT_ADAPTER_PATH="/usr1/home/s125mdg41_03/models/xxx/bert_${DATASET}_hf_p_tuning/best_model"
 
 # For qwen3-lora (Qwen3 LoRA)
 QWEN3_BASE_MODEL="/usr1/home/s125mdg41_03/models/hf_models/qwen317b"
-QWEN3_LORA_ADAPTER_PATH="/usr1/home/s125mdg41_03/models/ee6483/qwen3_${DATASET}_lora_focal_3/best_model"
+QWEN3_LORA_ADAPTER_PATH="/usr1/home/s125mdg41_03/models/xxx/qwen3_${DATASET}_lora_focal_3/best_model"
 
 # ========== EVALUATION SETTINGS ==========
 
 # Output directory (will be created if not exists)
-OUTPUT_DIR="results/ee6483/eval_qwen3_${DATASET}_lora_eval_final"
+OUTPUT_DIR="results/xxx/eval_qwen3_${DATASET}_lora_eval_final"
 
 # Batch size for batched inference
 BATCH_SIZE=32

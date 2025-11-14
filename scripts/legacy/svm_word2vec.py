@@ -855,7 +855,7 @@ def parse_args():
     parser.add_argument(
         "--output-dir",
         type=str,
-        default="results/ee6483/svm_word2vec_results",
+        default="results/xxx/svm_word2vec_results",
         help="Output directory for results"
     )
     parser.add_argument(
