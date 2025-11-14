@@ -83,6 +83,37 @@ For deeper analysis, convert `evaluation_results.json` into metrics/reports:
 python -m evaluation.analyze_results outputs/eval/evaluation_results.json
 ```
 
+## Pretrained Checkpoints
+
+Use these ready-made checkpoints to reproduce the full runs quickly (download and place them under `outputs/<method>/checkpoint-best` or point `scripts/evaluate.py` to the extracted folder):
+
+| Method | Checkpoint |
+| --- | --- |
+| BERT full fine-tuning | [Google Drive](https://drive.google.com/file/d/1_NzccVd1DF5vPv3NJCkN1jWYcj5uF3az/view?usp=drive_link) |
+| BERT LoRA adapter | [Google Drive](https://drive.google.com/file/d/18G7fm_-uRdlAy9QZLc-udd16vzzQC3dh/view?usp=drive_link) |
+| BERT Prompt Tuning adapter | [Google Drive](https://drive.google.com/file/d/1uXRLKbD4iDH0XHX_DXy7WN4iQvfT9N6d/view?usp=drive_link) |
+| Qwen3 LoRA + Focal adapter | [Google Drive](https://drive.google.com/file/d/13V_L3p_OJno5CccBJgc7hBoUkzrrwwO_/view?usp=drive_link) |
+| Qwen3 LoRA adapter | [Google Drive](https://drive.google.com/file/d/1YZESoaXCW6dwFUHcI5FI-mPaBBhLX27Z/view?usp=drive_link) |
+
+Download the corresponding base model (e.g., `bert-base-cased`, `Qwen/Qwen1.5-1.8B-Chat`) and place it under `models/huggingface_models/` before loading the adapters.
+
+### Base Model Download Scripts
+
+Helper scripts for mirrored checkpoints live in `scripts/download/`:
+
+```bash
+# Download datasets into data/raw/
+python scripts/download/dataset_download.py --base-dir data/raw
+
+# Download BERT / other encoder models into models/huggingface_models/
+python scripts/download/model_download.py --base-dir models/huggingface_models
+
+# Download sentence embedder backbones
+python scripts/download/download_embedder.py --base-dir models/huggingface_models
+```
+
+Adjust the script arguments to match the model you need; once downloaded, point `scripts/train.py` or `scripts/evaluate.py` to the local model paths.
+
 ## Repository Layout
 
 - `src/` – reusable packages (data loaders, feature builders, models, trainers, evaluators, utils)
