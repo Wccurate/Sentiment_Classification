@@ -54,7 +54,7 @@ SAVE_BEST_ONLY=""  # Set to "--save-best-only" to save disk space
 # W&B settings
 # WANDB_PROJECT=""
 if [ "${DATASET}" = "project" ]; then
-    WANDB_PROJECT="EE6483"
+    WANDB_PROJECT="Sentiment_Project"
 else
     WANDB_PROJECT="Intent_Recognition"
 fi

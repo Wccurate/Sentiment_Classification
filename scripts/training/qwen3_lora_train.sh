@@ -9,7 +9,7 @@ USE_FOCAL_LOSS=true  # Set to true to use Focal Loss with class weighting
 
 # ========== Configuration ==========
 WANDB_API_KEY="xxx"
-WANDB_PROJECT="EE6483"
+WANDB_PROJECT="Sentiment_Project"
 DATASET="project"  # Options: atis, hwu64, snips, clinc_oos, project
 CLINC_VERSION="plus"  # For clinc_oos: small, plus, imbalanced
 DATASET_DIR="data/raw/project"

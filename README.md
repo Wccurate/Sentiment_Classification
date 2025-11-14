@@ -1,4 +1,4 @@
-# Sentiment Classification — EE6483 Project
+# Sentiment Classification Project
 
 This repository consolidates multiple sentiment-classification strategies into a single, configurable codebase. Classical ML pipelines (TF-IDF / Word2Vec / Sentence-BERT + SVM) coexist with deep models ranging from frozen BERT heads to LoRA-tuned Qwen models, all exposed through one training entry point.
 
