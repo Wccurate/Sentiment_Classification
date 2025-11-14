@@ -110,7 +110,9 @@ bash scripts/training/qwen3_lora_train.sh
 
 ## Representative Code
 
-The classical pipelines share the reusable trainer below (`src/training/trainer.py`). It illustrates how TF-IDF + SVM training is orchestrated:
+### Classical (TF-IDF + SVM)
+
+The reusable trainer in `src/training/trainer.py`:
 
 ```python
 def run_tfidf_svm(cfg: ClassicalRunConfig, output_dir: str = "outputs/tfidf_svm"):
@@ -139,7 +141,95 @@ def run_tfidf_svm(cfg: ClassicalRunConfig, output_dir: str = "outputs/tfidf_svm"
     svm.save(Path(output_dir) / "svm_model.joblib")
 ```
 
-Transformer-based methods share `run_transformer_training` in `src/training/bert_pipeline.py`, which configures frozen/LoRA/prompt modes, handles gradient accumulation, FP16, and optional focal loss.
+### Deep Learning (BERT/Qwen Loops)
+
+`src/training/bert_pipeline.py` powers frozen, prompt, LoRA, and focal variants:
+
+```python
+def run_transformer_training(cfg: TransformerRunConfig):
+    tokenizer = AutoTokenizer.from_pretrained(cfg.model_name)
+    model = AutoModelForSequenceClassification.from_pretrained(
+        cfg.model_name,
+        num_labels=num_labels,
+        id2label=id2label,
+        label2id=label2id,
+    )
+
+    if cfg.method == "bert_frozen":
+        for param in model.base_model.parameters():
+            param.requires_grad = False
+    elif cfg.method in {"bert_lora", "qwen3_lora", "qwen3_lora_focal"}:
+        lora_cfg = LoraConfig(
+            r=cfg.lora_r,
+            lora_alpha=cfg.lora_alpha,
+            lora_dropout=cfg.lora_dropout,
+            target_modules=cfg.lora_target_modules or ["query", "value"],
+            task_type=TaskType.SEQ_CLS,
+        )
+        model = get_peft_model(model, lora_cfg)
+    elif cfg.method == "bert_prompt":
+        prompt_cfg = PromptTuningConfig(
+            task_type=TaskType.SEQ_CLS,
+            prompt_tuning_init=PromptTuningInit.RANDOM,
+            num_virtual_tokens=cfg.prompt_tokens,
+        )
+        model = get_peft_model(model, prompt_cfg)
+
+    train_loader = build_dataloader(train, tokenizer, cfg.max_length, cfg.batch_size, shuffle=True)
+    optimizer = AdamW(model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay)
+    scaler = GradScaler(enabled=cfg.fp16)
+    use_focal = cfg.focal_gamma > 0 or cfg.method.endswith("focal")
+    focal_loss = FocalLoss(gamma=cfg.focal_gamma) if use_focal else None
+
+    for epoch in range(cfg.epochs):
+        model.train()
+        optimizer.zero_grad(set_to_none=True)
+        for step, batch in enumerate(train_loader):
+            batch = {k: v.to(cfg.device) for k, v in batch.items()}
+            labels = batch["labels"]
+            with autocast(enabled=cfg.fp16):
+                outputs = model(**batch)
+                logits = outputs.logits
+                loss = focal_loss(logits, labels) if use_focal else outputs.loss
+            scaler.scale(loss).backward()
+            if (step + 1) % cfg.gradient_accumulation == 0:
+                scaler.step(optimizer)
+                scaler.update()
+                optimizer.zero_grad(set_to_none=True)
+        # evaluate & save best checkpoint
+```
+
+This loop handles gradient accumulation, mixed precision, LoRA adapter injection, prompt tuning, and focal loss by toggling options in `TransformerRunConfig`.
+
+### Metrics Computation
+
+`evaluation/metrics/compute_metrics.py` exposes helpers used by analyzers:
+
+```python
+def compute_classification_metrics(y_true, y_pred, num_classes=None):
+    accuracy = accuracy_score(y_true, y_pred)
+    precision_micro = precision_score(y_true, y_pred, average='micro', zero_division=0)
+    recall_macro = recall_score(y_true, y_pred, average='macro', zero_division=0)
+    f1_macro = f1_score(y_true, y_pred, average='macro', zero_division=0)
+    cm = confusion_matrix(y_true, y_pred)
+    return {
+        "accuracy": float(accuracy),
+        "precision_micro": float(precision_micro),
+        "recall_macro": float(recall_macro),
+        "f1_macro": float(f1_macro),
+        "confusion_matrix": cm.tolist(),
+    }
+
+def compute_latency_stats(latencies):
+    latencies_ms = np.array(latencies) * 1000
+    return {
+        "mean_ms": float(np.mean(latencies_ms)),
+        "p95_ms": float(np.percentile(latencies_ms, 95)),
+        "max_ms": float(np.max(latencies_ms)),
+    }
+```
+
+Downstream tools (`evaluation/analyze_results.py`) combine these metrics with prediction metadata to produce reports.
 
 ## Evaluation & Analysis
 
