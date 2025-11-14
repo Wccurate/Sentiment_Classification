@@ -636,7 +636,7 @@ def parse_args():
     parser.add_argument(
         "--output-dir",
         type=str,
-        default="results/ee6483/svm_tfidf_results",
+        default="results/xxx/svm_tfidf_results",
         help="Output directory for results"
     )
     parser.add_argument(

@@ -25,7 +25,7 @@ DATASET_DIR="data/raw/${DATASET}"
 
 
 if [ "${DATASET}" = "project" ]; then
-    OUTPUT_PROJECT_BASE="ee6483"
+    OUTPUT_PROJECT_BASE="xxx"
 else
     OUTPUT_PROJECT_BASE="intent_exp"
 fi
