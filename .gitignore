@@ -1,0 +1,40 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+env/
+.env/
+.venv/
+venv/
+pip-wheel-metadata/
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+nosetests.xml
+*.log
+
+# Editors/IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data/artifacts
+data/raw/
+outputs/
+results/
+wandb/
+*.ckpt
+*.pt
+*.bin
+*.joblib
+*_checkpoint/
+
+# OS files
+.DS_Store
+Thumbs.db

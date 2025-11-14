@@ -1,0 +1,2 @@
+Original root-level train_*.py, eval_*.py, and svm_*.py moved here.
+Prefer using unified entries: scripts/train.py and scripts/evaluate.py.

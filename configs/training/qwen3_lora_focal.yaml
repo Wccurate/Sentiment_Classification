@@ -1,0 +1,24 @@
+method: qwen3_lora_focal
+train_csv: data/project/train.csv
+text_col: text
+label_col: label
+output_dir: outputs/qwen3_lora_focal
+model_name: Qwen/Qwen1.5-1.8B-Chat
+epochs: 20
+batch_size: 32
+max_len: 128
+lr: 1e-4
+val_ratio: 0.1
+lora_r: 4
+lora_alpha: 32
+lora_dropout: 0.05
+lora_target_modules:
+  - q_proj
+  - k_proj
+  - v_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+focal_gamma: 5.0
+seed: 42

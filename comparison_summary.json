@@ -1,0 +1,23 @@
+{
+  "total_samples": 1851,
+  "correct_predictions": 1761,
+  "wrong_predictions": 90,
+  "accuracy": 0.9513776337115073,
+  "precision": 0.9821200510855683,
+  "recall": 0.96125,
+  "f1_score": 0.9715729627289955,
+  "confusion_matrix": {
+    "TP": 1538,
+    "TN": 223,
+    "FP": 28,
+    "FN": 62
+  },
+  "true_label_distribution": {
+    "0": 251,
+    "1": 1600
+  },
+  "pred_label_distribution": {
+    "0": 285,
+    "1": 1566
+  }
+}
